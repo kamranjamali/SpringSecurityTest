@@ -2,7 +2,6 @@ package com.security.SpringSecurityTest.controllers;
 
 
 import com.security.SpringSecurityTest.entities.User;
-import com.security.SpringSecurityTest.service.CustomUserDetailsService;
 import com.security.SpringSecurityTest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

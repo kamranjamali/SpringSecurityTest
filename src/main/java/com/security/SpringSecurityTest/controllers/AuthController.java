@@ -24,58 +24,41 @@ public class AuthController {
 
     @Autowired
     private UserDetailsService userDetailsService;
-
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
     @Autowired
     private AuthenticationManager manager;
-
-
     @Autowired
     private JwtHelper helper;
+    @Autowired
+    private UserService userService;
 
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    @Autowired
-    private UserService  userService;
-
-
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
-
         this.doAuthenticate(request.getUsername(), request.getPassword());
-
-
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
         String token = this.helper.generateToken(userDetails);
-
         JwtResponse response = JwtResponse.builder()
                 .token(token)
                 .status("Success").build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
     @PostMapping("/create-user")
     public ResponseEntity<?> register(@ModelAttribute User user) {
         User user1 = this.userService.createUser(user);
         return new ResponseEntity<>("User Created Successfully !!", HttpStatus.OK);
     }
-
     private void doAuthenticate(String username, String password) {
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
         try {
             manager.authenticate(authentication);
-
-
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException(" Invalid Username or Password  !!");
         }
-
     }
-
     @ExceptionHandler(BadCredentialsException.class)
     public String exceptionHandler() {
         return "Credentials Invalid !!";
