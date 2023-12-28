@@ -45,11 +45,13 @@ public class AuthController {
                 .status("Success").build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @PostMapping("/create-user")
     public ResponseEntity<?> register(@ModelAttribute User user) {
         User user1 = this.userService.createUser(user);
         return new ResponseEntity<>("User Created Successfully !!", HttpStatus.OK);
     }
+
     private void doAuthenticate(String username, String password) {
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
@@ -59,6 +61,7 @@ public class AuthController {
             throw new BadCredentialsException(" Invalid Username or Password  !!");
         }
     }
+
     @ExceptionHandler(BadCredentialsException.class)
     public String exceptionHandler() {
         return "Credentials Invalid !!";
